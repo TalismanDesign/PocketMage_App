@@ -8,13 +8,9 @@ External PocketMage apps are ELFs that the OS firmware loads at runtime. They ru
 
 ## What this template gives you
 
-- `main.cpp` - a working starter that draws your app name and the clock on
-  the e-ink, writes a line to the OLED, chirps the buzzer, and waits for a
-  keypress before exiting. Modify it freely; the header comments explain the
-  surface you can call.
+- `main.cpp` - a working starter that draws your app name and the clock on the e-ink, writes a line to the OLED, chirps the buzzer, and waits for a keypress before exiting. Modify it freely; the header comments explain the surface you can call.
 - `Makefile` - builds the app ELF and delivery tar against the SDK.
-- `assets/icon.png` - the 40x40 card icon shown in the APPLOADER grid.
-  Replace it with your own drawing; `make` regenerates the 1-bit binary.
+- `assets/icon.png` - the 40x40 card icon shown in the APPLOADER grid. Replace it with your own drawing; `make` regenerates the 1-bit binary.
 - `tools/make_icon.py` - converts any image to the 200-byte icon format.
 - `.github/workflows/build.yml` - CI that builds and gates the app.
 
@@ -22,8 +18,7 @@ External PocketMage apps are ELFs that the OS firmware loads at runtime. They ru
 
 - A checkout of the PocketMage SDK (<https://github.com/TalismanDesign/PocketMage_SDK>)
 - Python 3 (for the icon tool; needs Pillow: `python3 -m pip install pillow`)
-- The ESP32-S3 xtensa toolchain. The SDK's build recipe probes the usual
-  locations (espressif toolchains, the PlatformIO package, PATH).
+- The ESP32-S3 xtensa toolchain. The SDK's build recipe probes the usual locations (espressif toolchains, the PlatformIO package, PATH).
 
 ## Build
 
@@ -33,13 +28,11 @@ make            # builds <dirname>.app.elf in build/
 make pack       # also produces <dirname>.tar (app + icon)
 ```
 
-`APP_NAME` defaults to the directory name. To ship under a different card
-name, either rename the directory or set `APP_NAME` in the Makefile.
+`APP_NAME` defaults to the directory name. To ship under a different card name, either rename the directory or set `APP_NAME` in the Makefile.
 
 ## Gate the app (recommended)
 
-The `pm` tool from the SDK validates every undefined symbol against the
-host export surface:
+The `pm` tool from the SDK validates every undefined symbol against the host export surface:
 
 ```sh
 python3 -m pip install -e $PM_SDK_ROOT
@@ -47,14 +40,11 @@ cd /path/to/your/app
 python3 -m tools.pm check --host-elf /path/to/PocketMageOS/.pio/build/PM_PRODUCTION/firmware.elf
 ```
 
-Without `--host-elf` the check uses the curated export list plus the libc
-allowlist; with it the gate is exact.
+Without `--host-elf` the check uses the curated export list plus the libc allowlist; with it the gate is exact.
 
 ## Install
 
-Copy `<app>.tar` to the SD card and install it through the APPLOADER app, or
-place `build/<app>.app.elf` and `<app>_ICON.bin` where APPLOADER scans for
-them. The loader caches installs in `/apps/slotN`.
+Copy `<app>.tar` to the SD card and install it through the APPLOADER app, or place `build/<app>.app.elf` and `<app>_ICON.bin` where APPLOADER scans for them. The loader caches installs in `/apps/slotN`.
 
 ## Layout
 
