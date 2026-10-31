@@ -64,7 +64,7 @@ jobs:
       - name: Inspect the artifact
         run: |
           xtensa-esp32s3-elf-readelf -h build/*.app.elf | grep -E 'Class|Data|Entry point'
-          ls -la build/ *.tar
+          ls -la build/
 
       - name: Gate undefined symbols against the curated SDK surface
         run: |
@@ -76,4 +76,4 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: app-tar
-          path: "*.tar"
+          path: build/*.tar
