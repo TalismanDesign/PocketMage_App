@@ -31,7 +31,7 @@ extern "C" int main(int argc, char **argv) {
   printf("built against sdk %s, host reports %s\n", PM_SDK_VERSION,
          host_version ? host_version : "unknown");
 
-  pm_bz_play_jingle(0);  // startup chirp, respects the mute setting
+  pm_bz_play_jingle(0); // startup chirp, respects the mute setting
 
   // ---- e-ink: title, clock line, separator, hint ----
   const int w = pm_eink_width();
@@ -52,13 +52,13 @@ extern "C" int main(int argc, char **argv) {
 
   pm_eink_clear();
   pm_text_color(PM_TARGET_EINK, 1);
-  pm_text(PM_TARGET_EINK, center_x(w, title, PM_STYLE_HEADING2),
-          8 + title_h, title, PM_STYLE_HEADING2);
+  pm_text(PM_TARGET_EINK, center_x(w, title, PM_STYLE_HEADING2), 8 + title_h,
+          title, PM_STYLE_HEADING2);
   pm_text(PM_TARGET_EINK, 8, 8 + 2 * title_h, "A PocketMage app",
           PM_STYLE_BODY);
   pm_text(PM_TARGET_EINK, 8, 8 + 2 * title_h + body_h + 4, time_line,
           PM_STYLE_MONO);
-  pm_eink_rect(8, h - 30, w - 8, h - 30, true, true);  // 1px separator
+  pm_eink_rect(8, h - 30, w - 8, h - 30, true, true); // 1px separator
   pm_text(PM_TARGET_EINK, center_x(w, "any key to quit", PM_STYLE_CAPTION),
           h - 8, "any key to quit", PM_STYLE_CAPTION);
   pm_eink_refresh();
@@ -76,7 +76,7 @@ extern "C" int main(int argc, char **argv) {
       pm_bz_play_jingle(1);
       return 0;
     }
-    const int state = pm_kb_state();  // 0 normal, 1 shift, 2 fn, 3 fn+shift
+    const int state = pm_kb_state(); // 0 normal, 1 shift, 2 fn, 3 fn+shift
     if (state != old_state) {
       printf("kb state %d\n", state);
       old_state = state;
