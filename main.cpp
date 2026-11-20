@@ -9,6 +9,8 @@
 // ms to wait for a keypress before exiting on its own.
 #define K_QUIT_TIMEOUT_MS 20000
 
+static constexpr const char* kLogTag = "APP";
+
 static int center_x(int width, const char *text, int style) {
   const int tw = pm_text_width(PM_TARGET_EINK, text, style);
   return (width - tw) / 2;
@@ -18,18 +20,18 @@ extern "C" int main(int argc, char **argv) {
   const char *app_name = argc > 0 && argv[0] ? argv[0] : "pocketmage app";
   const char *elf_path = argc > 1 ? argv[1] : "";
 
-  printf("pocketmage app starting: %s (%s)\n", app_name, elf_path);
+  PM_LOGI(kLogTag, "Starting %s (%s)", app_name, elf_path);
 
   if (pm_app_abi() != PM_APP_API_ABI) {
-    printf("host ABI mismatch: app %u, host %u; this build is stale\n",
-           PM_APP_API_ABI, pm_app_abi());
+    PM_LOGE(kLogTag, "Host ABI mismatch: app %u, host %u; this build is stale",
+            PM_APP_API_ABI, static_cast<unsigned>(pm_app_abi()));
     pm_oled_sysmsg("SDK ABI mismatch", 2000);
     return 1;
   }
 
   const char *host_version = pm_host_sdk_version();
-  printf("built against sdk %s, host reports %s\n", PM_SDK_VERSION,
-         host_version ? host_version : "unknown");
+  PM_LOGI(kLogTag, "Built against SDK %s, host reports %s", PM_SDK_VERSION,
+          host_version ? host_version : "unknown");
 
   pm_bz_play_jingle(0); // startup chirp, respects the mute setting
 
@@ -71,21 +73,21 @@ extern "C" int main(int argc, char **argv) {
   while (waited_ms < K_QUIT_TIMEOUT_MS) {
     const char key = pm_kb_read();
     if (key) {
-      printf("exit on key '%c'\n", key);
+      PM_LOGD(kLogTag, "Exit on key '%c'", key);
       pm_oled_sysmsg("app done", 800);
       pm_bz_play_jingle(1);
       return 0;
     }
     const int state = pm_kb_state(); // 0 normal, 1 shift, 2 fn, 3 fn+shift
     if (state != old_state) {
-      printf("kb state %d\n", state);
+      PM_LOGD(kLogTag, "Keyboard state %d", state);
       old_state = state;
     }
     usleep(10000);
     waited_ms += 10;
   }
 
-  printf("timeout, exiting\n");
+  PM_LOGI(kLogTag, "Timeout, exiting");
   pm_bz_play_jingle(1);
   return 0;
 }
